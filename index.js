@@ -9,7 +9,7 @@ req: a js object representing the incoming request
 res: data to be sent back to whoever made the request
 */
 app.get('/', (req, res) => {
-    res.send({hi: 'there'});
+    res.send({hi: 'potato'});
 });
 
 
