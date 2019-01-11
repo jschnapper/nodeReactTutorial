@@ -51,31 +51,42 @@ passport.use(
             callbackURL: '/auth/google/callback',
             proxy: true
         },
-        (accessToken, refreshToken, profile, done) => {
-            // Check to see if new user, an asyc action
-            // Anytime connecting with db, it is async
-            // The query returns a promise
-            User.findOne({
-                    googleId: profile.id
-                })
-                .then(existingUser => {
-                    if (existingUser) {
-                        // There is already record for this user
-                        // Use passport's done function to indicate the process is over
-                        done(null, existingUser);
-                    } else {
-                        // There is no record for this user, create a new user
-                        // use '.save()' function to add to database
-                        // Asyc; call done once saved
-                        new User({
-                                googleId: profile.id
-                            })
-                            .save()
-                            .then(user => done(null, user));
-                    }
-                })
+        // (accessToken, refreshToken, profile, done) => {
+        //     // Check to see if new user, an asyc action
+        //     // Anytime connecting with db, it is async
+        //     // The query returns a promise
+        //     User.findOne({
+        //             googleId: profile.id
+        //         })
+        //         .then(existingUser => {
+        //             if (existingUser) {
+        //                 // There is already record for this user
+        //                 // Use passport's done function to indicate the process is over
+        //                 done(null, existingUser);
+        //             } else {
+        //                 // There is no record for this user, create a new user
+        //                 // use '.save()' function to add to database
+        //                 // Asyc; call done once saved
+        //                 new User({
+        //                         googleId: profile.id
+        //                     })
+        //                     .save()
+        //                     .then(user => done(null, user));
+        //             }
+        //         })
 
 
+        // }
+
+        // REFACTOR THE ABOVE WITH ASYNC AWAIT
+
+        async (accessToken, refreshToken, profile, done) => {
+            const existingUser = await User.findOne({ googleId: profile.id });
+            if (existingUser) {
+                return done(null, existingUser);
+            }
+            const user = await new User({ googleId: profile.id }).save();
+            done(null, user);    
         }
     )
 );
