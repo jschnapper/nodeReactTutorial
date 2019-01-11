@@ -1,5 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+// gives the express application access to cookies since
+const cookieSession = require('cookie-session');
+// import passport in order to handle cookies
+const passport = require('passport');
 const keys = require('./config/keys');
 // But we also need to require the use of the passport service,
 // Otherwise, the file would never be referenced
@@ -14,6 +18,19 @@ mongoose.connect(keys.mongoURI);
 // Creates express application
 const app = express();
 
+// Tell express to make use of cookies in the applicaton
+app.use(
+    cookieSession({
+        // Max age indicates when the cookie expires in ms
+        // Keys to encrypt the cookie
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        keys: [keys.cookieKey]
+    })
+);
+
+// Tells passport to use cookies
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 /* 
