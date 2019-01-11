@@ -47,7 +47,9 @@ passport.use(
     new GoogleStrategy({
             clientID: keys.googleClientID,
             clientSecret: keys.googleClientSecret,
-            callbackURL: '/auth/google/callback'
+            // Below is a relative path and common cause of dropping the 's' from 'https', occurring within the GoogleStrategy
+            callbackURL: '/auth/google/callback',
+            proxy: true
         },
         (accessToken, refreshToken, profile, done) => {
             // Check to see if new user, an asyc action
