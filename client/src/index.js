@@ -1,12 +1,30 @@
+// Primary location to render the root component and the `redux` side of the application
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from './components/App';
+import reducers from './reducers';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+/**
+ * The first argument to createStore() is all of the different reducers being used in the application
+ * 
+ * The second argument is the initial state of the application
+ */
+const store = createStore(() => {}, {}, applyMiddleware());
+
+// The provider tag is a react component that knows how to read changes from a redux store. Whenever the redux store changes, the provider will inform all its children components
+
+/**
+ * ReactDOM.render(foo, bar) takes two parameters
+ * 
+ * The first is the root component 
+ * The second is where to render inside the DOM
+ * 
+ * select the root of the index.html
+ */
+ReactDOM.render(
+    <Provider store={store}><App /></Provider>,
+    document.querySelector('#root'));
