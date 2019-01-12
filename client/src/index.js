@@ -1,9 +1,11 @@
 // Primary location to render the root component and the `redux` side of the application
 
+import 'materialize-css/dist/css/materialize.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
 
 import App from './components/App';
 import reducers from './reducers';
@@ -13,7 +15,7 @@ import reducers from './reducers';
  * 
  * The second argument is the initial state of the application
  */
-const store = createStore(() => {}, {}, applyMiddleware());
+const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 // The provider tag is a react component that knows how to read changes from a redux store. Whenever the redux store changes, the provider will inform all its children components
 
