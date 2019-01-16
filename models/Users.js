@@ -13,7 +13,8 @@ const { Schema } = mongoose;
 
 // Properties can be freely added and removed
 const userSchema = new Schema({
-    googleId: String
+    googleId: String,
+    credits: { type: Number, default: 0 }
 });
 
 // Creates a new model class, a mongoDB collection called 'users' with the userSchema schema

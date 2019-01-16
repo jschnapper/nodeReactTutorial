@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 // import passport in order to handle cookies
 const passport = require('passport');
 const keys = require('./config/keys');
+const bodyParser = require('body-parser');
 // But we also need to require the use of the passport service,
 // Otherwise, the file would never be referenced
 // However, we don't need to assign a variable to it because 
@@ -17,6 +18,12 @@ mongoose.connect(keys.mongoURI);
 
 // Creates express application
 const app = express();
+
+// Middlewares must be indicated in app.use statements
+
+// Anything with a request body that goes through app will go through this middleware
+// It will parse the body and assign it to req.body property of the incoming request object 
+app.use(bodyParser.json()); 
 
 // Tell express to make use of cookies in the applicaton
 app.use(
@@ -47,6 +54,7 @@ res: data to be sent back to whoever made the request
 
 // Immediately invokes the function exported by the file with the app object
 require('./routes/authRoutes')(app);
+require('./routes/billingRoutes')(app);
 /**
  * Also can be written as
  * 
