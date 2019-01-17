@@ -55,12 +55,38 @@ res: data to be sent back to whoever made the request
 // Immediately invokes the function exported by the file with the app object
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+
 /**
  * Also can be written as
  * 
  * const authRoutes = require('./routes/authRoutes');
  * authRoutes(app);
  */
+
+ /******************
+  * IN PRODUCTION, the create-react-app routes no longer exists because that server only exists in development
+  * Need to be able to tell the express server in production how to handle those routes
+  *******************/
+if (process.env.NODE_ENV === 'production') {
+    // Express will serve production assets
+    // Like main.js file or main.css file
+    // i.e. references to specific files in the project directory
+    // If some get request comes into the app and we don't understand what it's looking for
+    // then look in the client/build directory and try to see if there is some file that matches the request 
+    // Order of operations: if express can't find file via this statement, it will go the next. 
+    app.use(express.static('client/build')); 
+ 
+    // Express will serve index.html file
+    // If it doesn't recognize the route
+    const path = require('path');
+    // If someone makes a request for a route we don't understand, serve it the html document
+    // If we don't know this route, we assume the react-router side of the app is responsible for the route
+    // Kick the user to the client side application
+    // This is the absolute catch all
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 
 
 
