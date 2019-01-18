@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 // Nothing is exported from that file, we just want to make sure it's executed
 // Order of ****require statements matters****. If the below requires were the other way around, Passport would attempt to load a model that isn't yet declared, throwing an error
 require('./models/Users');
+require('./models/Survey');
 require('./services/passport');
 
 mongoose.connect(keys.mongoURI);
