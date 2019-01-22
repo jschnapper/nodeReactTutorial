@@ -56,6 +56,7 @@ res: data to be sent back to whoever made the request
 // Immediately invokes the function exported by the file with the app object
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 /**
  * Also can be written as
